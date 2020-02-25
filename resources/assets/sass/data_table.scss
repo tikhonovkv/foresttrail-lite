@@ -1,0 +1,69 @@
+.table-wrapper.box{
+
+  .hidden-cols ul{
+    padding: 0;
+    list-style: none;
+    margin: 0;
+  }
+
+  .table-action-buttons .button{
+    margin: 0 5px;
+  }
+
+  .table-responsive{
+    margin: 0 #{-$spacer};
+    width: calc(100% + #{$spacer * 2});
+
+    tr > *:first-child{
+      padding-left: $spacer;
+    }
+
+    tr > *:last-child{
+      padding-right: $spacer;
+    }
+  }
+  .records-info{
+    padding: 0;
+  }
+  .pagination{
+    padding: 0;
+
+    .page-item:not(.disabled){
+      cursor: pointer;
+    }
+  }
+  .top-controls{
+    padding-left: 0;
+    padding-right: 0;
+
+    .search-input{
+      input{
+        background: rgba(255, 255, 255, 0.10);
+        color: white;
+        border-radius: 3px;
+      }
+      .icon{
+        position: absolute;
+        z-index: 1;
+        right: 10px;
+        top: 8px;
+      }
+    }
+
+    .table-buttons .btn{
+      margin: 0 4px;
+    }
+  }
+  .bottom-controls > .column {
+    padding-left: 0;
+    padding-right: 0;
+
+    &:not(:last-child) {
+      padding-bottom: 0;
+    }
+  }
+
+  tfoot tr td{
+    background: $gray-800;
+  }
+}

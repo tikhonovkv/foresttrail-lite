@@ -1,0 +1,11 @@
+@mixin spinner($radius, $width, $color) {
+  display: inline-block;
+  width: $radius;
+  height: $radius;
+  border: $width solid transparent;
+  border-radius: 50%;
+  border-top-color: $color;
+  border-left-color: $color;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+}

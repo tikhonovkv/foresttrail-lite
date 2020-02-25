@@ -1,0 +1,125 @@
+.index{
+  .bottom-buttons {
+    padding-bottom: 40px;
+
+    .name{
+      text-align: left;
+
+      .time-passed{
+        font-size: 0.7rem;
+      }
+    }
+    &.shadow{
+      background: linear-gradient(0deg, $background 0%, rgba(255,255,255,0) 100%);
+    }
+  }
+
+  button{
+    justify-content: space-between;
+
+    &.settings .icon{
+      fill: $text-ui-button-active;
+      height: 18px;
+      width: 18px;
+    }
+
+    &.next .icon{
+      fill: $text-ui-button-active;
+      height: 12px;
+      width: 12px;
+    }
+
+    &.share .icon{
+      height: 20px;
+      width: 20px;
+    }
+  }
+
+  .label{
+    display: block;
+    padding: 5px 5px 10px 5px;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  .tracker-field{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    background: $background-tracker-field;
+
+    &.blocked .name{
+      color: $text-error;
+    }
+
+    .tracker{
+      width: 100%;
+
+      .name{
+        font-weight: 900;
+        font-size: 22px;
+        input{
+          border: 0;
+          font-weight: inherit;
+          font-size: inherit;
+          width: 100%;
+        }
+      }
+      .alias{
+        font-weight: 400;
+        font-size: 12px;
+        padding-bottom: 5px;
+        color: $background-tracker-field-alias;
+      }
+    }
+
+    .delete{
+      height: 40px;
+      display: flex;
+      align-items: center;
+
+      .icon{
+        height: 12px;
+        width: 20px;
+      }
+    }
+  }
+
+  .add-tracker{
+    .alias{
+      border: 0;
+      border-radius:10px;
+      background: $background-tracker-field;
+      width: calc(100% - 10px);
+      height: 30px;
+      padding: 23px;
+    }
+    button{
+      right: 0;
+      top:-2px;
+      border: 0;
+      position: absolute;
+      border-radius: 100%;
+      width: 50px;
+      height: 50px;
+      font-size: 23px;
+      font-weight: 100;
+      padding: 0;
+      display: block;
+
+      &:focus{
+        border:0;
+        outline: 0;
+      }
+    }
+    .error{
+      padding: 5px;
+      font-weight: 900;
+      font-size: 13px;
+      color: red;
+    }
+  }
+}

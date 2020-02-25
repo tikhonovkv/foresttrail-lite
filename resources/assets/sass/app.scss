@@ -1,0 +1,74 @@
+
+// Fonts
+//@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-vue/src/index.scss';
+
+// Icons
+@import 'icons';
+
+// Switches Material
+@import "switches_material";
+
+// pin-pad
+//@import "pin_pad";
+
+// темная тема
+@import "bootswatch";
+
+// vue-data-table
+@import "data_table";
+
+// general-form
+@import "general_form";
+
+.container > .loading-overlay{
+  margin: 0 15px;
+}
+
+.switch-success{
+  background-color: $success;
+}
+
+.vue-treeselect   {
+  color: $body-bg;
+}
+
+.navbar-laravel {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.table-hover tbody tr.selected, .row.selected {
+  background-color: lighten($secondary, 30%);
+  color: white;
+}
+
+.scroll::-webkit-scrollbar {
+  width: 2em;
+  height: 2em;
+}
+.scroll::-webkit-scrollbar-track-piece {
+  background: #fff;
+}
+.scroll::-webkit-scrollbar-thumb {
+  background: #adadad;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='50' height='25'%3E%3Cpath d='M3 6h18v2.016h-18v-2.016zM3 12.984v-1.969h18v1.969h-18zM3 18v-2.016h18v2.016h-18z' fill='white'%3E%3C/path%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.navbar{
+  border-radius: $border-radius;
+}
+
+.page{
+  background-color: $breadcrumb-bg;
+  border-radius: $border-radius;
+  padding: $spacer;
+}

@@ -1,0 +1,51 @@
+.screen-share{
+
+  >div.general {
+    height: calc(100vh - 40px);
+    position: relative;
+  }
+
+  .trackers-link{
+    font-weight: 900;
+    font-size: 22px;
+    width: 100%;
+
+    textarea{
+      border: 0;
+      outline: 0;
+      background: transparent;
+      text-align: center;
+      font-weight: inherit;
+      font-size: inherit;
+      width: 100%;
+    }
+    .label{
+      text-align: center;
+      &.sub-label{
+        padding: 0 40px;
+      }
+    }
+  }
+
+  label.label{
+    display: flex;
+    justify-content: center;
+  }
+
+  a.close{
+    position: absolute;
+    right: $grid-gutter-width/2;
+    display: flex;
+    width: 15px;
+    height: 15px;
+  }
+
+  .center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+}

@@ -1,0 +1,19 @@
+
+// Variables
+@import "../variables";
+@import "~bootstrap/scss/_functions.scss";
+@import "~bootstrap/scss/_variables.scss";
+
+.ymap-container {
+  margin: #{-$spacer} #{-$spacer} 0 #{-$spacer};
+  width: calc(100% + #{$spacer * 2});
+  height: 300px;
+
+  > div > ymaps > ymaps{
+    border-radius: #{$border-radius} #{$border-radius} 0 0;
+
+    > ymaps {
+      border-radius: #{$border-radius} #{$border-radius} 0 0;
+    }
+  }
+}

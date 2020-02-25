@@ -1,0 +1,1521 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Foresttrail",
+        "description": "Все наши сервисы работают через данное API",
+        "contact": {
+            "email": "tikhonov.kv@ya.ru"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://foresttrail.loc/api/v1",
+            "description": "General server"
+        },
+        {
+            "url": "https://foresttrail.ru/api/v1",
+            "description": "General server"
+        }
+    ],
+    "paths": {
+        "/calibration/?user_id={user_id}/date-range={date-range}": {
+            "get": {
+                "tags": [
+                    "Calibration"
+                ],
+                "summary": "Список сессий трассы/полилинии. indexCalibration",
+                "description": "Возвращает сессии, начальные  координаты трассы/полилинии, id пользователя, id сессии)",
+                "externalDocs": {
+                    "description": "find more info here",
+                    "url": "https://swagger.io/about"
+                },
+                "operationId": "indexCalibration",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "id пользователя, создателя тарассы/полилинии, кому принадлежат данные",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": "введите 8 или 5 "
+                        }
+                    },
+                    {
+                        "name": "date-range",
+                        "in": "query",
+                        "description": "Дата и время, для фильтра периода",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "1567011176,1569480776"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/itemsTrackerSession"
+                                        },
+                                        {
+                                            "properties": {
+                                                "totalRows": {
+                                                    "title": "Итого строк",
+                                                    "description": "общее количество записей в таблице сессий",
+                                                    "type": "integer",
+                                                    "format": "int64",
+                                                    "example": "23"
+                                                },
+                                                "success": {
+                                                    "title": "success",
+                                                    "description": "Выполненно",
+                                                    "type": "string",
+                                                    "example": "true"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "oauth2": []
+                    }
+                ]
+            }
+        },
+        "/calibration/?id={id}": {
+            "put": {
+                "tags": [
+                    "Calibration"
+                ],
+                "summary": "Сохранение векторов, начальной координаты  трассы/полилинии. updateCalibration",
+                "description": "Ожидает массив векторов, начальных координат, id сесии и пользователя  для сохранения трассы/полилинии",
+                "operationId": "updateCalibration",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id сессии",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "введите  5 "
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Список векторов и начальные координаты",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "schema": "RequestbodyCalibration",
+                                "properties": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/TrackerSession"
+                                    },
+                                    "StartPoint": {
+                                        "description": " данные сессии",
+                                        "properties": {
+                                            "lat": {
+                                                "description": "Координата lat",
+                                                "type": "number",
+                                                "example": "53.8225111645696"
+                                            },
+                                            "lon": {
+                                                "description": "Координата lon",
+                                                "type": "number",
+                                                "example": "87.15906181516218"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "oauth2": []
+                    }
+                ]
+            }
+        },
+        "/calibration/{sessionId}?user_id={user_id}": {
+            "get": {
+                "tags": [
+                    "Calibration"
+                ],
+                "summary": "Список векторов и начальные координаты трассы/полилинии. showCalibration",
+                "description": "Возвращает список длин векторов x,y,z, начальные  координаты трассы/полилинии, id пользователя, id сессии, количество точек трассы/полилинии  )",
+                "operationId": "showCalibration",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "id пользователя, создателя тарассы/полилинии, кому принадлежат данные",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": "введите 8 или 5 "
+                        }
+                    },
+                    {
+                        "name": "sessionId",
+                        "in": "path",
+                        "description": "id сессии, данные  для трассы/полилинии, сохраненный пользрвателем ",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": "введите от 1 и до .... "
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": "RequestbodyCalibration",
+                                    "properties": {
+                                        "items": {
+                                            "$ref": "#/components/schemas/TrackerVector"
+                                        },
+                                        "lat": {
+                                            "description": "Координата lat",
+                                            "type": "number",
+                                            "example": "53.8225111645696"
+                                        },
+                                        "lon": {
+                                            "description": "Координата lon",
+                                            "type": "number",
+                                            "example": "87.15906181516218"
+                                        },
+                                        "user_id": {
+                                            "description": "ID пользователя",
+                                            "type": "number",
+                                            "example": "5"
+                                        },
+                                        "sessionId": {
+                                            "description": "ID сессии",
+                                            "type": "number",
+                                            "example": "85"
+                                        },
+                                        "arrLength": {
+                                            "description": "Количество записей акселерометра",
+                                            "type": "number",
+                                            "example": "27"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "oauth2": []
+                    }
+                ]
+            }
+        },
+        "/coordinates": {
+            "get": {
+                "tags": [
+                    "Coordinates"
+                ],
+                "summary": "Список координат",
+                "description": "Возвращает список (след) координат авторизованного клиента, включая его группу. (Для каждого члена группы возвращается только последнее местоположение)",
+                "operationId": "getCoordinatesList",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "path",
+                        "description": "Лимит кол-ва координат клиента.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20,
+                            "maximum": 50,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "session_id",
+                        "in": "path",
+                        "description": "Номер сессии (справочник TrackerSession) Если указан, возвращает все координаты сессии",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "without_group",
+                        "in": "path",
+                        "description": "Координаты группы не нужны",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    },
+                    {
+                        "oauth2": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Coordinates"
+                ],
+                "summary": "Сохранение координат",
+                "description": "Ожидает массив координат для сохранения пройденого пути",
+                "operationId": "storeCoordinates",
+                "parameters": [
+                    {
+                        "name": "coords",
+                        "in": "query",
+                        "description": "Список координат",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "lat": {
+                                        "type": "number"
+                                    },
+                                    "lon": {
+                                        "type": "number"
+                                    },
+                                    "timestamp": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "Кому принадлежат координаты",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    },
+                    {
+                        "oauth2": []
+                    }
+                ]
+            }
+        },
+        "/device": {
+            "get": {
+                "tags": [
+                    "Device"
+                ],
+                "summary": "Список свободных Устройство. indexDevice",
+                "description": "Список свободных устройства, поле provider_pos_id = null)",
+                "externalDocs": {
+                    "description": "find more info here",
+                    "url": "https://swagger.io/about"
+                },
+                "operationId": "indexDevice",
+                "responses": {
+                    "200": {
+                        "description": "successful operation ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "0": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "key": {
+                                                        "type": "srting",
+                                                        "example": "23"
+                                                    },
+                                                    "name": {
+                                                        "type": "srting",
+                                                        "example": "Zi9  Zilog-Z809"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "success": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "success": true,
+                                        "0": [
+                                            {
+                                                "key": 23,
+                                                "name": "Zi9  Zilog-Z809"
+                                            },
+                                            {
+                                                "key": 27,
+                                                "name": "Zi84  Zilog-Z84"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "oauth2": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Device"
+                ],
+                "summary": "Сохранить Устройство. storeDevice",
+                "description": "Сохраняет данные   устройства)",
+                "externalDocs": {
+                    "description": "find more info here",
+                    "url": "https://swagger.io/about"
+                },
+                "operationId": "storeDevice",
+                "requestBody": {
+                    "description": "Составить  в запись устройства",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CmodelDevice"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": "7"
+                                        },
+                                        "success": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "oauth2": []
+                    }
+                ]
+            }
+        },
+        "/device/{id}": {
+            "get": {
+                "tags": [
+                    "Device"
+                ],
+                "summary": "Список УВстройств. showDevice",
+                "description": "Возвращает данные по  id устройства)",
+                "externalDocs": {
+                    "description": "find more info here",
+                    "url": "https://swagger.io/about"
+                },
+                "operationId": "showDevice",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id устройства",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": "введите чило от 1 до ... "
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/modelDevice"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/defaultModelDate"
+                                        },
+                                        {
+                                            "properties": {
+                                                "provider_id": {
+                                                    "description": "Индификатор провайдера",
+                                                    "type": "integer",
+                                                    "format": "int64",
+                                                    "example": "7"
+                                                },
+                                                "provider_name": {
+                                                    "description": "Наименование  провайдера",
+                                                    "type": "string",
+                                                    "example": "ИП Рогожкин"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "No query results for model [App\\\\Models\\\\Device]."
+                                        },
+                                        "exception": {
+                                            "type": "string",
+                                            "example": ": Illuminate\\\\Database\\\\Eloquent\\\\ModelNotFoundException"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No query results for model [App\\\\Models\\\\Device]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "oauth2": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Device"
+                ],
+                "summary": "Устройство для удаления. deleteDevice",
+                "description": "Удаление  записи  устройства",
+                "externalDocs": {
+                    "description": "find more info here",
+                    "url": "https://swagger.io/about"
+                },
+                "operationId": "deleteDevice",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id устройства необходимого для удаления",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success delete 1 rows"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "oauth2": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Device"
+                ],
+                "summary": "Модификация Устройств. updateDevice",
+                "description": "Возвращает измененные данные  по  id устройству)",
+                "externalDocs": {
+                    "description": "find more info here",
+                    "url": "https://swagger.io/about"
+                },
+                "operationId": "updateDevice",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id устройства",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "введите число от 1 "
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Внести изменеия в запись устройства",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/modelDevice"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "item": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/CmodelDevice"
+                                                },
+                                                {
+                                                    "$ref": "#/components/schemas/defaultModelDate"
+                                                }
+                                            ]
+                                        },
+                                        "success": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "VALIDATION_ERROR",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "'alias': ['The alias field is required.'],'imei': ['The imei field is required.']"
+                                        },
+                                        "errorType": {
+                                            "type": "string",
+                                            "example": "'VALIDATION_ERROR'"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "oauth2": []
+                    }
+                ]
+            }
+        },
+        "/passport/login": {
+            "post": {
+                "tags": [
+                    "Passport"
+                ],
+                "summary": "Авторизация",
+                "description": "Вход",
+                "operationId": "login",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Код пользователя",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "phone",
+                        "in": "query",
+                        "description": "Телефон пользователя",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Password",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Invalid specified (ID or Email) with password"
+                    }
+                }
+            }
+        },
+        "/passport/register": {
+            "post": {
+                "tags": [
+                    "Passport"
+                ],
+                "summary": "Регистрация (не работает)",
+                "description": "Регистрация нового пользователя (не работает)",
+                "operationId": "register",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/passport/user-list": {
+            "post": {
+                "tags": [
+                    "Passport"
+                ],
+                "summary": "Пользователи",
+                "description": "Вывод пользователей",
+                "operationId": "users",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/sensors": {
+            "get": {
+                "tags": [
+                    "Sensors"
+                ],
+                "summary": "Вывод данных с сенсоров устройсв",
+                "description": "Возвращает список данных с датчиков устройств",
+                "operationId": "getSensorList",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "path",
+                        "description": "Лимит кол-ва для списка",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20,
+                            "maximum": 50,
+                            "minimum": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    },
+                    {
+                        "oauth2": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Sensors"
+                ],
+                "summary": "Сохранение данных с датчиков устройства",
+                "description": "Ожидает массив в массиве разбитый по timestamp, с указанным сенсорами и соответвующими данными",
+                "operationId": "storeSensors",
+                "parameters": [
+                    {
+                        "name": "linearAcceleration",
+                        "in": "query",
+                        "description": "Список датчиков",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "north": {
+                                        "type": "number"
+                                    },
+                                    "east": {
+                                        "type": "number"
+                                    },
+                                    "up": {
+                                        "type": "number"
+                                    },
+                                    "timestamp": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "Кому принадлежат данные",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    },
+                    {
+                        "oauth2": []
+                    }
+                ]
+            }
+        },
+        "/tracker-session": {
+            "post": {
+                "tags": [
+                    "TrackerSession"
+                ],
+                "summary": "Создание сессии. storeTrackerSession",
+                "description": " Сохранянет запись в таблице с иненем полученным в запросе, поле user_id генерируется из зарегистрированного текущего  токена ",
+                "operationId": "storeTrackerSession",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Наименование",
+                                        "type": "string",
+                                        "example": "Трасса от дома 9"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "session_id": {
+                                            "description": "id сессии ",
+                                            "type": "integer",
+                                            "example": " 25"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "description": "ошибка авторизации",
+                                            "type": "string",
+                                            "example": "  Sorry, something went wrong... Unauthenticated. "
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "oauth2": []
+                    }
+                ]
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Список пользователей",
+                "description": "Возвращает список клиентов",
+                "operationId": "getUsersList",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "path",
+                        "description": "Лимит",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "description": "Страница",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "oauth2": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Добавить пользователя (не работает)",
+                "description": "Добавить пользователя (не работает)",
+                "operationId": "storeUser",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Лимит",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Страница",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    },
+                    {
+                        "oauth2": []
+                    }
+                ]
+            }
+        },
+        "/users/{id}": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Обновить данные",
+                "description": "Обновить данные пользователя",
+                "operationId": "updateUser",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Имя",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "phone",
+                        "in": "query",
+                        "description": "Телефон",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "group_number",
+                        "in": "query",
+                        "description": "Номер группы",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Error": {
+                "required": [
+                    "message"
+                ],
+                "properties": {
+                    "errors": {
+                        "type": "string",
+                        "example": " Sorry, something went wrong... Unauthenticated."
+                    }
+                },
+                "type": "object"
+            },
+            "itemsTrackerSession": {
+                "properties": {
+                    "items": {
+                        "$ref": "#/components/schemas/TrackerSession"
+                    }
+                },
+                "type": "object"
+            },
+            "defaultModelDate": {
+                "title": "Date/Time",
+                "description": "Дата/веремя",
+                "properties": {
+                    "deleted_at": {
+                        "description": "дата soft delete",
+                        "type": "string",
+                        "example": "2019-11-04 14:22:54"
+                    },
+                    "created_at": {
+                        "description": "дата создания записи",
+                        "type": "string",
+                        "example": "1917-10-07 14:22:54"
+                    },
+                    "updated_at": {
+                        "description": "дата создания записи",
+                        "type": "string",
+                        "example": "1991-10-07 14:22:54"
+                    }
+                },
+                "type": "object"
+            },
+            "modelDevice": {
+                "title": "modelDevice",
+                "description": "Структура  модели  Устройств",
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/CmodelDevice"
+                    },
+                    {
+                        "properties": {
+                            "id": {
+                                "description": "Индификатор заиси",
+                                "type": "number",
+                                "example": "77"
+                            },
+                            "provider_pos_id": {
+                                "description": "Индификатор точки продаж",
+                                "type": "integer",
+                                "example": "37"
+                            },
+                            "provider_id": {
+                                "description": "Индификатор провайдера",
+                                "type": "integer",
+                                "example": "7"
+                            },
+                            "provider_name": {
+                                "description": "Наименование  провайдера",
+                                "type": "string",
+                                "example": "ИП Рогожкин"
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            },
+            "CmodelDevice": {
+                "title": "CmodelDevice",
+                "description": "Структура  модели  Устройств",
+                "properties": {
+                    "name": {
+                        "description": "Наименование устройства",
+                        "type": "string",
+                        "example": "Zilog-Z80"
+                    },
+                    "alias": {
+                        "description": "Краткое наименование",
+                        "type": "string",
+                        "example": "Zi"
+                    },
+                    "imei": {
+                        "description": "Код IMEI устройства",
+                        "type": "string",
+                        "example": "35-419002-389644-3."
+                    },
+                    "options": {
+                        "description": "Опции для устройства",
+                        "type": "string",
+                        "example": "В комплекте блок питания"
+                    },
+                    "device_tariff_id": {
+                        "description": "Индификатор тарифа установленного для устройства",
+                        "type": "integer",
+                        "example": "27"
+                    }
+                },
+                "type": "object"
+            },
+            "CalibrationRequest": {
+                "properties": {
+                    "user_id": {
+                        "schema": "CalibrationRequest",
+                        "description": "id пользователя",
+                        "type": "integer"
+                    },
+                    "sessionId": {
+                        "schema": "CalibrationRequest",
+                        "description": "id сессии",
+                        "type": "integer"
+                    },
+                    "startPoint": {
+                        "schema": "CalibrationRequest",
+                        "description": " начальные координаты полилинии",
+                        "properties": {
+                            "lat": {
+                                "description": "Координата lat",
+                                "type": "number"
+                            },
+                            "lon": {
+                                "description": "Координата lon",
+                                "type": "number"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "TrackerSession": {
+                "title": "TrackerSession",
+                "description": "Сессии где сохраняются  начальные координаты трассы/полилинии, id сесии и пользователя ",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "Индекс сессии ",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": " 167 "
+                    },
+                    "name": {
+                        "title": "name",
+                        "description": "Наименование ",
+                        "type": "string",
+                        "format": "string",
+                        "example": " Трасса от номера 2 до номера 9 "
+                    },
+                    "lat": {
+                        "title": "lat",
+                        "description": "Координата lat",
+                        "type": "string",
+                        "format": "number",
+                        "example": "53.8225111645696"
+                    },
+                    "Lon": {
+                        "title": "lon",
+                        "description": "Координата lon",
+                        "type": "string",
+                        "format": "number",
+                        "example": "87.15906181516218"
+                    },
+                    "user_id": {
+                        "title": "user_id",
+                        "description": " id пользователя создавшего запись",
+                        "type": "string",
+                        "format": "int64",
+                        "example": "4"
+                    }
+                },
+                "type": "object"
+            },
+            "TrackerVector": {
+                "title": "TrackerVector",
+                "description": "Параметры векторов   трассы/полилинии, id сесии  ",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": " id записи",
+                        "type": "integer",
+                        "example": " 7 "
+                    },
+                    "x": {
+                        "title": "x",
+                        "description": "Размер по оси Х ",
+                        "type": "integer",
+                        "example": " 12 "
+                    },
+                    "y": {
+                        "title": "y",
+                        "description": "Размер по оси y ",
+                        "type": "integer",
+                        "example": " 23 "
+                    },
+                    "z": {
+                        "title": "z",
+                        "description": "Размер по оси z ",
+                        "type": "integer",
+                        "example": " 7 "
+                    },
+                    "tracker_sessions_id": {
+                        "title": "tracker_sessions_id",
+                        "description": "id номера сессии",
+                        "type": "integer",
+                        "example": " 79 "
+                    },
+                    "deleted_at": {
+                        "title": "deleted_at",
+                        "description": "deleted_at",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "title": "created_at",
+                        "description": "created_at",
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "title": "updated_at",
+                        "description": "updated_at",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "Json": {
+                "description": "the basic response",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "success": {
+                                    "type": "boolean"
+                                },
+                                "data": {},
+                                "errors": {
+                                    "type": "object"
+                                },
+                                "token": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "oauth2": {
+                "type": "oauth2",
+                "description": "Oauth2 security",
+                "name": "oauth2",
+                "in": "header",
+                "flows": {
+                    "password": {
+                        "tokenUrl": "v1/passport/login-username",
+                        "scopes": []
+                    }
+                },
+                "bearerFormat": "bearer",
+                "scheme": "http"
+            },
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Calibration",
+            "description": "Создание, сохранение и редактирование трасс/полилиний на yandex картах"
+        },
+        {
+            "name": "Coordinates",
+            "description": "Обработка координат"
+        },
+        {
+            "name": "Device",
+            "description": "Создание, сохранение и редактирование Устройств"
+        },
+        {
+            "name": "Passport",
+            "description": "Аунтентификация"
+        },
+        {
+            "name": "Sensors",
+            "description": "Сенсоры устройств"
+        },
+        {
+            "name": "TrackerSession",
+            "description": "Сессии трекера"
+        },
+        {
+            "name": "Users",
+            "description": "Пользователи"
+        }
+    ]
+}

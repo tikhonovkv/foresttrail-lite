@@ -1,0 +1,245 @@
+@import "mixins";
+@import "keyframes";
+
+body{
+  font-family: "YS Text";
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  color: $text-body;
+  font-size: 16px;
+  line-height: 20px;
+
+  background-color: $background;
+
+  .globalClass_ET > jdiv:first-child{
+    display: none;
+  }
+
+  //.globalClass_ET > #jcont{
+  //  display: none !important;
+  //}
+}
+
+
+button:focus, input:focus{
+  outline: 0;
+}
+
+.btn{
+  padding: 17px 30px;
+  border: 0;
+  font-size: 18px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  text-align: center;
+  color: $text-ui-button-active;
+  background: $background-ui-button-one-active;
+  background: linear-gradient(90deg, $background-ui-button-one-active 0%, $background-ui-button-two-active 100%);
+  border-radius: 8px;
+  cursor: pointer;
+  transition-property: background;
+  transition-duration: 3s;
+
+  &.btn-white{
+    background: white;
+    color: #4c4c4c;
+
+    &:hover{
+      background: white;
+    }
+  }
+
+  &.mini{
+    padding: 15px 25px;
+  }
+
+  &:hover{
+    background: linear-gradient(90deg, $background-ui-button-one-active 50%, $background-ui-button-two-active 100%);
+  }
+
+  &.disabled{
+    color: $text-ui-button-disabled;
+    background: $background-ui-button-disabled;
+  }
+
+  .spinner{
+    @include spinner( 24px, 3px, $text-ui-button-active);
+  }
+
+  &.secondary{
+    font-size: 16px;
+    line-height: 22px;
+    height: 40px;
+    background: $background-ui-button-secondary;
+    color: $color-ui-button-secondary;
+
+    &:hover{
+      background: $background-ui-button-secondary-focus;
+    }
+  }
+}
+
+.input-field{
+  label{
+    padding: 24px 0 8px 0;
+    font-size: 18px;
+    line-height: 24px;
+    color: $text-description;
+    display: block;
+    font-weight: 500;
+  }
+  .input-wrapper {
+    input, textarea {
+      background: $background-ui-input;
+      color: $text-body;
+      border-radius: 8px;
+      display: block;
+      border: 0;
+      min-width: 100%;
+      padding: 12px 40px 12px 16px;
+      font-size: 18px;
+      line-height: 24px;
+      &.readonly {
+        background-color: opacify($background-ui-input, 0.1);
+      }
+      &.has-error {
+        color: $text-body;
+        background-color: $background-ui-input-error;
+      }
+      &:focus {
+        outline: 0;
+      }
+      ::placeholder {
+        color: $text-disabled;
+      }
+    }
+
+    &.loading {
+      input {
+        color: $text-disabled;
+        background-color: opacify($background-ui-input, 0.1);
+      }
+    }
+  }
+
+  .clear-field{
+    background: url($url-icon-close) no-repeat;
+    position: absolute;
+    right: 25px;
+    //margin-top: -29px;
+    top: 74px;
+    width: 12px;
+    height: 12px;
+
+    &.no-label{
+      top: 19px;
+    }
+  }
+  .error{
+    padding-top: 5px;
+    font-size: 14px;
+    line-height: 20px;
+    display: block;
+    color: $text-error;
+  }
+}
+
+.loading {
+  &:after {
+    @include spinner(24px, 3px, $text-body);
+
+    content: '';
+    position: absolute;
+    bottom: 12px;
+    right: calc(50% + -12px);
+  }
+}
+
+.section.buttons{
+  text-align: center;
+  width: 100%;
+  padding-top: ($grid-gutter-width/2);
+  padding-bottom: $grid-gutter-width;
+
+  background: linear-gradient(360deg, $background 0%, rgba(31, 33, 38, 0) 100%);
+
+  .btn{
+    width: 100%;
+  }
+}
+
+.top-fixed{
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  padding-right: $grid-gutter-width;
+  padding-left: $grid-gutter-width;
+  top: 10px;
+}
+
+.bottom-fixed{
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  bottom: 0;
+  padding-right: $grid-gutter-width;
+  padding-left: $grid-gutter-width;
+}
+
+.row-fluid {
+  margin-left: -$grid-gutter-width;
+  margin-right: -$grid-gutter-width;
+  margin-bottom: 0;
+  padding: $grid-gutter-width $grid-gutter-width/2;
+
+  span{
+    margin: 0;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 24px;
+    color: $text-body;
+  }
+}
+
+.container-full-width {
+  width: 100vw;
+  padding: 0;
+}
+
+.hidden{
+  display: none;
+}
+
+.divider{
+  background: $ui-divider;
+  width: 100%;
+  height: 1px;
+  margin: 5px $grid-gutter-width/2;
+}
+
+.space-bottom-button{
+  padding: 70px;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .25s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+break{
+  flex-basis: 100%;
+  width: 0px;
+  height: 0px;
+  overflow: hidden;
+}
+
+a{
+  text-decoration: none;
+  color: $text-link;
+}
